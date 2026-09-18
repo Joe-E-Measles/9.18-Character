@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://cqvkf7v45w3pg"]
+
+[ext_resource type="Texture2D" uid="uid://bjs3v0r0ys6qp" path="res://icon.svg" id="1_u52ul"]
+[ext_resource type="Script" uid="uid://dwpymemrpj1bn" path="res://character_2d.gd" id="1_vonw3"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0yrln"]
+
+[node name="Level" type="Node2D" unique_id=2000729317]
+
+[node name="character 2d" type="CharacterBody2D" parent="." unique_id=25020410]
+script = ExtResource("1_vonw3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="character 2d" unique_id=93008659]
+shape = SubResource("CapsuleShape2D_0yrln")
+
+[node name="Sprite2D" type="Sprite2D" parent="character 2d" unique_id=1916643217]
+position = Vector2(316, 201)
+texture = ExtResource("1_u52ul")
