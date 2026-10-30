@@ -13,6 +13,8 @@ func _physics_process(delta: float) -> void:
 	$Trail.set_point_position(0, Vector2(0,0))
 	if not pulling:
 		$Trail.set_point_position(1, $hookshot.position)
+	else:
+		$Trail.set_point_position(1, $hookshot.hit_pos)
 	#print($hookshot/Trail.points[0])
 	if pulling:
 		match direction:
@@ -42,7 +44,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed("Up Button") and not casted and not pulling:
 		self.velocity.y -= SPEED
 		$Sprite2D.frame = 1
-		$Sprite2D.flip_v = false
+		#$Sprite2D.flip_v = false
 		direction = 0
 	elif Input.is_action_just_released("Up Button"):
 		stop()
@@ -51,7 +53,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed("Down Button") and not casted and not pulling:
 		self.velocity.y += SPEED
 		$Sprite2D.frame = 1
-		$Sprite2D.flip_v = true
+		#$Sprite2D.flip_v = true
 		direction = 1
 	elif Input.is_action_just_released("Down Button"):
 		stop()
@@ -99,6 +101,7 @@ func hookshot():
 func _on_hit_detection_body_entered(body: Node2D) -> void:
 	if body is StaticBody2D:
 		$hit.play()
+		$hookshot.hit_pos = body.global_position
 		pull(body.global_position)
 		$hookshot.direction = Vector2(0,0)
 		$Trail.set_point_position(1, body.global_position)

@@ -2,6 +2,7 @@ extends CharacterBody2D
 @export var speed:= 1000.0
 @export var out_time:= 0.5
 var direction = Vector2(0,0)
+var hit_pos: Vector2
 func cast(dir: int):
 	match dir:
 		0:
