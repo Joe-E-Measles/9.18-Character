@@ -2,13 +2,85 @@
 
 [ext_resource type="Script" uid="uid://dwpymemrpj1bn" path="res://character_2d.gd" id="1_vonw3"]
 [ext_resource type="Texture2D" uid="uid://484amyqckwyl" path="res://9.18 char.png" id="2_vonw3"]
+[ext_resource type="Script" uid="uid://bi3uywubgommd" path="res://hookshot.gd" id="3_oi3di"]
+[ext_resource type="Texture2D" uid="uid://dy03i2ngpluth" path="res://MrBaps.png" id="4_0b4ue"]
+[ext_resource type="Texture2D" uid="uid://c1xx6sec72vbo" path="res://tiniestmonty.png" id="5_f2txt"]
+[ext_resource type="AudioStream" uid="uid://caktpfsqehc23" path="res://Hookshot zap.wav" id="6_km5ld"]
+[ext_resource type="AudioStream" uid="uid://y2mn4y06eli2" path="res://Hookshot zap 2.wav" id="7_i2t4f"]
+[ext_resource type="AudioStream" uid="uid://be6klpddtk22x" path="res://Hookshot boom.wav" id="8_8cye3"]
+[ext_resource type="Texture2D" uid="uid://bjs3v0r0ys6qp" path="res://icon.svg" id="9_i2t4f"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0yrln"]
+radius = 32.0
+height = 126.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_byufo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nmjk2"]
+size = Vector2(42, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f2txt"]
+atlas = ExtResource("4_0b4ue")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ainy"]
+atlas = ExtResource("4_0b4ue")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n6hdu"]
+atlas = ExtResource("4_0b4ue")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_km5ld"]
+atlas = ExtResource("4_0b4ue")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i2t4f"]
+atlas = ExtResource("4_0b4ue")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_64uuv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f2txt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ainy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n6hdu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_km5ld")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i2t4f")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_md28q"]
+size = Vector2(72, 163)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_64uuv"]
+size = Vector2(208, 123)
 
 [node name="Level" type="Node2D" unique_id=2000729317]
 
 [node name="character 2d" type="CharacterBody2D" parent="." unique_id=25020410]
 script = ExtResource("1_vonw3")
+
+[node name="pull" type="AudioStreamPlayer" parent="character 2d" unique_id=486201083]
+stream = ExtResource("6_km5ld")
+
+[node name="hit" type="AudioStreamPlayer" parent="character 2d" unique_id=62700284]
+stream = ExtResource("7_i2t4f")
+
+[node name="cast" type="AudioStreamPlayer" parent="character 2d" unique_id=843448196]
+stream = ExtResource("8_8cye3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="character 2d" unique_id=93008659]
 shape = SubResource("CapsuleShape2D_0yrln")
@@ -18,3 +90,56 @@ texture_filter = 1
 scale = Vector2(5, 5)
 texture = ExtResource("2_vonw3")
 vframes = 2
+
+[node name="Camera2D" type="Camera2D" parent="character 2d" unique_id=1839694540]
+zoom = Vector2(0.5, 0.5)
+
+[node name="hookshot" type="CharacterBody2D" parent="character 2d" unique_id=995076064]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("3_oi3di")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="character 2d/hookshot" unique_id=655857776]
+shape = SubResource("RectangleShape2D_byufo")
+
+[node name="HitDetection" type="Area2D" parent="character 2d/hookshot" unique_id=1839739785]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="character 2d/hookshot/HitDetection" unique_id=1641561722]
+shape = SubResource("RectangleShape2D_nmjk2")
+debug_color = Color(0.67380196, 0.50766087, 3.85046e-07, 0.41960785)
+
+[node name="Timer" type="Timer" parent="character 2d/hookshot" unique_id=583222298]
+
+[node name="Trail" type="Line2D" parent="character 2d" unique_id=1713076790]
+texture_repeat = 2
+points = PackedVector2Array(0, 0, 0, 0)
+texture = ExtResource("5_f2txt")
+texture_mode = 1
+
+[node name="Hand" type="AnimatedSprite2D" parent="character 2d/Trail" unique_id=1110546753]
+visible = false
+texture_repeat = 2
+position = Vector2(41, 0)
+sprite_frames = SubResource("SpriteFrames_64uuv")
+frame = 3
+
+[node name="WallDetection" type="Area2D" parent="character 2d" unique_id=1384647400]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="character 2d/WallDetection" unique_id=130378002]
+position = Vector2(0, -3.5)
+shape = SubResource("RectangleShape2D_md28q")
+
+[node name="Walls" type="StaticBody2D" parent="." unique_id=1281251631]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls" unique_id=1364371544]
+position = Vector2(319, 6)
+shape = SubResource("RectangleShape2D_64uuv")
+
+[node name="Sprite2D" type="Sprite2D" parent="Walls/CollisionShape2D" unique_id=1483617520]
+position = Vector2(-0.4999981, 0)
+scale = Vector2(1.6640625, 1)
+texture = ExtResource("9_i2t4f")
+
+[connection signal="body_entered" from="character 2d/hookshot/HitDetection" to="character 2d" method="_on_hit_detection_body_entered"]
+[connection signal="timeout" from="character 2d/hookshot/Timer" to="character 2d" method="_on_timer_timeout"]
+[connection signal="body_entered" from="character 2d/WallDetection" to="character 2d" method="_on_wall_detection_body_entered"]
